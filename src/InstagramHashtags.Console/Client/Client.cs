@@ -11,7 +11,7 @@ public class IgClient(string host, string key) : IClient
     private string ApiHost { get; set; } = host;
     private string ApiKey { get; set; } = key;
 
-    public int MaxPages { get; set; } = 2;
+    public int MaxPages { get; set; } = 3;
 
     /// <summary>
     /// Searches for the specified tag and returns the response as a string.

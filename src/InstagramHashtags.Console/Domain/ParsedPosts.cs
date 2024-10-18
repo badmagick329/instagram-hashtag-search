@@ -1,6 +1,7 @@
 namespace InstagramHashtags.Console.Domain;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 
 public class PostUser
 {
@@ -125,4 +126,5 @@ public class ParsedPosts
     }
     public ParsedPosts(ApiResponse apiResponse)
     : this([apiResponse]) { }
+
 }
