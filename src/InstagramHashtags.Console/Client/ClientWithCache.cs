@@ -2,6 +2,7 @@ namespace InstagramHashtags.Console.Client;
 
 using InstagramHashtags.Console.Domain;
 using System;
+using Newtonsoft.Json;
 
 
 public class ClientWithCache : IClient
@@ -14,19 +15,25 @@ public class ClientWithCache : IClient
         ClientCache = new ClientCache();
     }
 
-    public async Task<string> SearchTag(Tag tag)
+    public async Task<List<ApiResponse>> SearchTag(Tag tag)
     {
         DateTime now = DateTime.UtcNow;
-        if (ClientCache.GetTag(tag) is string cache)
+        if (ClientCache.GetTag(tag) is string cachedData)
         {
-            Console.WriteLine($"Search took: {(DateTime.UtcNow - now).Milliseconds}ms");
-            Console.WriteLine("[HIT]");
-            return cache;
+            List<ApiResponse>? savedResponses = JsonConvert.DeserializeObject<List<ApiResponse>>(cachedData);
+            if (savedResponses is not null)
+            {
+                Console.WriteLine("Using Saved Data...");
+                Console.WriteLine($"Search took: {(DateTime.UtcNow - now).Milliseconds}ms");
+                return savedResponses;
+            }
         }
-        Console.WriteLine("[MISS]");
-        string response = await IgClient.SearchTag(tag);
-        Console.WriteLine($"Search took: {(DateTime.UtcNow - now).Milliseconds}ms");
-        ClientCache.SetTag(tag, response);
-        return response;
+        Console.WriteLine("No saved data found. Fetching...");
+        List<ApiResponse> apiResponses = await IgClient.SearchTag(tag);
+        string secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}ms";
+        Console.WriteLine($"Search took: {secondsFormatted}");
+        string apiResponseString = JsonConvert.SerializeObject(apiResponses);
+        ClientCache.SetTag(tag, apiResponseString);
+        return apiResponses;
     }
 }
