@@ -18,9 +18,6 @@ class Program
         ClientWithCache client = new(config.ApiHost, config.ApiKey);
         List<ApiResponse> apiResponses = await client.SearchTag(tag);
         ParsedPosts parsedPosts = new(apiResponses);
-        // Console.WriteLine(parsedPosts.Posts[0]);
-        // Console.WriteLine("------------------------");
-        // Console.WriteLine(parsedPosts.Posts[^1]);
         PostsOutput output = new(parsedPosts.Posts);
         output.WritePostsToCsv(tag.Text);
         output.WritePostsAnalyticsToFile(tag.Text, tag.Text);

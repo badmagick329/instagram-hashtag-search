@@ -30,7 +30,7 @@ public class ClientWithCache : IClient
         }
         Console.WriteLine("No saved data found. Fetching...");
         List<ApiResponse> apiResponses = await IgClient.SearchTag(tag);
-        string secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}ms";
+        string secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}s";
         Console.WriteLine($"Search took: {secondsFormatted}");
         string apiResponseString = JsonConvert.SerializeObject(apiResponses);
         ClientCache.SetTag(tag, apiResponseString);
