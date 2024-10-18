@@ -18,19 +18,21 @@ public class ClientWithCache : IClient
     public async Task<List<ApiResponse>> SearchTag(Tag tag)
     {
         DateTime now = DateTime.UtcNow;
+        string secondsFormatted = string.Empty;
         if (ClientCache.GetTag(tag) is string cachedData)
         {
             List<ApiResponse>? savedResponses = JsonConvert.DeserializeObject<List<ApiResponse>>(cachedData);
             if (savedResponses is not null)
             {
                 Console.WriteLine("Using Saved Data...");
-                Console.WriteLine($"Search took: {(DateTime.UtcNow - now).Milliseconds}ms");
+                secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}s";
+                Console.WriteLine($"Search took: {secondsFormatted}");
                 return savedResponses;
             }
         }
         Console.WriteLine("No saved data found. Fetching...");
         List<ApiResponse> apiResponses = await IgClient.SearchTag(tag);
-        string secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}s";
+        secondsFormatted = $"{(DateTime.UtcNow - now).Seconds}.{(DateTime.UtcNow - now).Milliseconds}s";
         Console.WriteLine($"Search took: {secondsFormatted}");
         string apiResponseString = JsonConvert.SerializeObject(apiResponses);
         ClientCache.SetTag(tag, apiResponseString);
