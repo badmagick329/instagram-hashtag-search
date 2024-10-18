@@ -24,6 +24,7 @@ public class AppConfig(string configPath)
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         string yaml = File.ReadAllText(ConfigPath);
+        Console.WriteLine($"Config text: {yaml}");
         Config config = deserializer.Deserialize<Config>(yaml);
         if (string.IsNullOrEmpty(config.ApiKey) || string.IsNullOrEmpty(config.ApiHost))
         {
