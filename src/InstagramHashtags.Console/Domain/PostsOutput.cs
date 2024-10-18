@@ -128,9 +128,9 @@ public class ParsedPostMap : ClassMap<ParsedPost>
         Map(m => m.CaptionIsEdited);
         Map(m => m.CommentCount);
         Map(m => m.CommercialityStatus);
-        Map(m => m.HasHighRiskGenAiInformTreatment);
+        // Map(m => m.HasHighRiskGenAiInformTreatment);
         Map(m => m.HasSharedToFb);
-        Map(m => m.IsPaidPartnership);
+        // Map(m => m.IsPaidPartnership);
         Map(m => m.IsVideo);
         Map(m => m.LikeCount);
         Map(m => m.TopLikers).Convert(row => string.Join(";", row.Value.TopLikers ?? []));
